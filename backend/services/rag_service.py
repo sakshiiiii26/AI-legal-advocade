@@ -108,6 +108,11 @@ async def search_similar_cases(query: str, k: int = 5) -> List[Dict[str, object]
     for score, idx in zip(distances[0], indices[0]):
         if idx < 0 or idx >= len(case_index_map):
             continue
+            
+        # Ignore results with low similarity (adjust threshold as needed, 0.3 is a safe start for dot product of normalized vectors)
+        if float(score) < 0.3:
+            continue
+            
         case_id = case_index_map[idx]
         metadata = case_metadata.get(case_id, {})
         results.append(
