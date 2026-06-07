@@ -3,17 +3,15 @@ import json
 from typing import Dict, List, Optional
 import faiss
 import numpy as np
-from sentence_transformers import SentenceTransformer
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from models import Case
+from services.ai_service import _get_openai_client
 
-MODEL_NAME = os.getenv("EMBEDDING_MODEL", "all-MiniLM-L6-v2")
-EMBED_DIM = 384
+EMBED_DIM = 1536
 INDEX_FILE = "data/faiss_index.bin"
 METADATA_FILE = "data/faiss_metadata.json"
 
-model = SentenceTransformer(MODEL_NAME)
 index = faiss.IndexFlatIP(EMBED_DIM)
 case_index_map: List[int] = []
 case_metadata: Dict[int, Dict[str, str]] = {}
@@ -33,7 +31,11 @@ def _load_index():
     global index, case_index_map, case_metadata
     if os.path.exists(INDEX_FILE) and os.path.exists(METADATA_FILE):
         try:
-            index = faiss.read_index(INDEX_FILE)
+            temp_index = faiss.read_index(INDEX_FILE)
+            if temp_index.d != EMBED_DIM:
+                print(f"Index dimension mismatch ({temp_index.d} != {EMBED_DIM}). Rebuilding index.")
+                return False
+            index = temp_index
             with open(METADATA_FILE, "r") as f:
                 data = json.load(f)
                 case_index_map = data.get("case_index_map", [])
@@ -53,8 +55,20 @@ def _normalize_vector(embedding: np.ndarray) -> np.ndarray:
 
 
 def embed_text(text: str) -> np.ndarray:
-    embedding = model.encode(text, convert_to_numpy=True, show_progress_bar=False)
-    return _normalize_vector(embedding)
+    client = _get_openai_client()
+    if not client:
+        print("Warning: OPENAI_API_KEY not set. Using random embeddings for RAG fallback.")
+        return _normalize_vector(np.random.rand(1, EMBED_DIM))
+    
+    try:
+        response = client.embeddings.create(
+            input=[text],
+            model="text-embedding-3-small"
+        )
+        return _normalize_vector(np.array(response.data[0].embedding))
+    except Exception as e:
+        print(f"Embedding error: {e}")
+        return _normalize_vector(np.random.rand(1, EMBED_DIM))
 
 
 async def build_index(session: AsyncSession):
@@ -109,7 +123,6 @@ async def search_similar_cases(query: str, k: int = 5) -> List[Dict[str, object]
         if idx < 0 or idx >= len(case_index_map):
             continue
             
-        # Ignore results with low similarity (adjust threshold as needed, 0.3 is a safe start for dot product of normalized vectors)
         if float(score) < 0.3:
             continue
             
