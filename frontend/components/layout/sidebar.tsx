@@ -15,6 +15,8 @@ import {
   Settings,
   ChevronDown,
   Plus,
+  Menu,
+  X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -106,6 +108,11 @@ const navGroups: NavGroup[] = [
 export function Sidebar() {
   const pathname = usePathname();
   const [expandedGroups, setExpandedGroups] = useState<string[]>(["Core", "Case Intelligence"]);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
+
+  React.useEffect(() => {
+    setIsMobileOpen(false);
+  }, [pathname]);
 
   const toggleGroup = (group: string) => {
     setExpandedGroups((prev) =>
@@ -114,7 +121,36 @@ export function Sidebar() {
   };
 
   return (
-    <div className="w-64 bg-white dark:bg-gray-950 border-r border-gray-200 dark:border-gray-800 h-screen overflow-y-auto flex flex-col sticky top-0">
+    <>
+      {/* Mobile Topbar */}
+      <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800 z-40 flex items-center justify-between px-4">
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
+            <span className="text-white font-bold text-sm">⚖️</span>
+          </div>
+          <h1 className="font-bold text-lg text-gray-900 dark:text-white">LexAI</h1>
+        </div>
+        <button
+          onClick={() => setIsMobileOpen(!isMobileOpen)}
+          className="p-2 -mr-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+        >
+          {isMobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+        </button>
+      </div>
+
+      {/* Mobile Overlay */}
+      {isMobileOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          onClick={() => setIsMobileOpen(false)}
+        />
+      )}
+
+      {/* Sidebar Content */}
+      <div className={cn(
+        "fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-gray-950 border-r border-gray-200 dark:border-gray-800 h-screen overflow-y-auto flex flex-col transition-transform duration-200 ease-in-out lg:sticky lg:top-0 lg:translate-x-0",
+        isMobileOpen ? "translate-x-0" : "-translate-x-full"
+      )}>
       {/* Header */}
       <div className="p-6 border-b border-gray-200 dark:border-gray-800">
         <div className="flex items-center gap-2">
@@ -194,5 +230,6 @@ export function Sidebar() {
         </div>
       </div>
     </div>
+    </>
   );
 }

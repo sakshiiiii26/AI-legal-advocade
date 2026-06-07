@@ -95,7 +95,7 @@ export default function ClientsPage() {
   );
 
   return (
-    <div className="p-8">
+    <div className="p-4 md:p-8">
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Clients</h1>
@@ -117,7 +117,7 @@ export default function ClientsPage() {
         <Card className="mb-8">
           <CardContent className="p-6">
             <form onSubmit={handleAddClient} className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Input
                   placeholder="Client Name"
                   value={formData.name}
@@ -132,7 +132,7 @@ export default function ClientsPage() {
                   required
                 />
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Input
                   placeholder="Phone (Optional)"
                   value={formData.phone}

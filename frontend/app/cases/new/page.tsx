@@ -40,7 +40,7 @@ const Step1_CaseDetails: React.FC<StepProps> = ({ data, onDataChange }) => {
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
             Case Number (Optional)
@@ -204,7 +204,7 @@ const Step4_Review: React.FC<StepProps> = ({ data }) => {
             <p className="text-sm text-gray-900 dark:text-white">{data.description as string}</p>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
               <p className="text-xs text-gray-600 dark:text-gray-400">Risk Level</p>
               <p className="text-sm font-medium text-gray-900 dark:text-white">{data.risk_level as string}</p>

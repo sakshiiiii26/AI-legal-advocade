@@ -244,7 +244,7 @@ export default function CaseDetailPage({ params }: { params: Promise<{ id: strin
 
   if (error || !caseData) {
     return (
-      <div className="p-8">
+      <div className="p-4 md:p-8">
         <div className="flex items-start gap-2 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
           <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
           <p className="text-sm text-red-700 dark:text-red-300">{error || "Case not found"}</p>
@@ -254,7 +254,7 @@ export default function CaseDetailPage({ params }: { params: Promise<{ id: strin
   }
 
   return (
-    <div className="p-8">
+    <div className="p-4 md:p-8">
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-start justify-between mb-4">
@@ -302,7 +302,7 @@ export default function CaseDetailPage({ params }: { params: Promise<{ id: strin
         </div>
 
         {/* Quick Stats */}
-        <div className="grid grid-cols-4 gap-4 mt-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
           <Card>
             <CardContent className="pt-4">
               <p className="text-xs text-gray-600 dark:text-gray-400">Risk Level</p>

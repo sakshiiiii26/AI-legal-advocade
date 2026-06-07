@@ -39,7 +39,7 @@ export default function AnalyticsPage() {
 
   if (isLoading) {
     return (
-      <div className="p-8">
+      <div className="p-4 md:p-8">
         <div className="flex items-center justify-center gap-2 py-12">
           <Loader className="w-5 h-5 animate-spin text-blue-600" />
           <span className="text-gray-600 dark:text-gray-400">Loading analytics...</span>
@@ -50,7 +50,7 @@ export default function AnalyticsPage() {
 
   if (error) {
     return (
-      <div className="p-8">
+      <div className="p-4 md:p-8">
         <div className="flex items-start gap-2 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
           <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
           <p className="text-sm text-red-700 dark:text-red-300">{error}</p>
@@ -78,7 +78,7 @@ export default function AnalyticsPage() {
   }));
 
   return (
-    <div className="p-8">
+    <div className="p-4 md:p-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Analytics</h1>
         <p className="text-gray-600 dark:text-gray-400 mt-1">

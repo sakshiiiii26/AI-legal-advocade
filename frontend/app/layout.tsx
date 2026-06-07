@@ -33,9 +33,9 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-gray-50 dark:bg-gray-950">
         <ThemeProvider attribute="class" defaultTheme="light" forcedTheme="light" enableSystem={false}>
-          <div className="flex min-h-screen">
+          <div className="flex min-h-screen flex-col lg:flex-row relative">
             <Sidebar />
-            <main className="flex-1 overflow-auto">
+            <main className="flex-1 overflow-auto pt-16 lg:pt-0 pb-16 lg:pb-0 w-full">
               {children}
             </main>
           </div>

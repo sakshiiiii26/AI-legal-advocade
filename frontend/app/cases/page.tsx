@@ -84,7 +84,7 @@ export default function CasesPage() {
   );
 
   return (
-    <div className="p-8">
+    <div className="p-4 md:p-8">
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div>
@@ -176,7 +176,7 @@ export default function CasesPage() {
                     </div>
 
                     {/* Info Grid */}
-                    <div className="grid grid-cols-4 gap-4 text-sm">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                       <div>
                         <p className="text-gray-500 dark:text-gray-400 text-xs">Status</p>
                         <div className="flex items-center gap-1.5 mt-1">
